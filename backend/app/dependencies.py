@@ -1,15 +1,20 @@
 """
-Shared FastAPI dependency: get_current_user.
+Shared FastAPI dependencies for authentication and RBAC.
 
-Decodes the Bearer JWT, then LOADS the User row from the database.
-Role is read from the DB record, NOT from the JWT payload.
-(PITFALLS Anti-Pattern 3 — never trust role claims in the token.)
+Role-Based Access Control is enforced via DI at the APIRouter level — NOT via
+inline `if` statements in handlers and NOT via middleware.
+(PITFALLS C4 — anti-pattern: per-route inline role checks)
 
 Usage:
-    from app.dependencies import get_current_user
+    # Router-level protection (preferred — PITFALLS C4):
+    router = APIRouter(
+        prefix="/admin",
+        dependencies=[Depends(require_admin)],
+    )
 
-    @router.get("/me")
-    async def me(user: User = Depends(get_current_user)):
+    # Per-route protection when needed:
+    @router.get("/something")
+    async def something(user: User = Depends(require_librarian)):
         ...
 """
 import jwt
@@ -18,8 +23,10 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.core.db import get_db
 from app.core.security import decode_access_token
+from app.core.enums import UserRole
 from app.models.user import User
 
 _bearer_scheme = HTTPBearer(auto_error=False)
@@ -35,6 +42,9 @@ async def get_current_user(
     2. Decodes and verifies the JWT signature + expiry.
     3. Loads the User row from the database by the `sub` claim.
     4. Returns the User (with the DB-authoritative role).
+
+    Role is always read from the DB record, NOT from the JWT payload.
+    (PITFALLS Anti-Pattern 3 — never trust role claims in the token.)
 
     Raises:
         HTTPException 401: missing/invalid/expired token, or user not found in DB.
@@ -86,3 +96,49 @@ async def get_current_user(
         )
 
     return user
+
+
+async def require_librarian(
+    current_user: User = Depends(get_current_user),
+) -> User:
+    """
+    RBAC dependency: require librarian (or admin) role.
+
+    Use at APIRouter level (not per-route inline checks — PITFALLS C4):
+        router = APIRouter(dependencies=[Depends(require_librarian)])
+
+    Raises:
+        HTTPException 401: no/invalid/expired token (from get_current_user)
+        HTTPException 403: user exists but role is not librarian
+    """
+    if current_user.role != UserRole.librarian:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Librarian role required",
+        )
+    return current_user
+
+
+async def require_admin(
+    current_user: User = Depends(get_current_user),
+) -> User:
+    """
+    RBAC dependency: require the seeded admin superuser.
+
+    In v1, the admin is identified by role==librarian AND email==settings.ADMIN_EMAIL.
+    Only the seeded superuser can call /admin/* endpoints — no other librarians can
+    promote users (D-03, D-05).
+
+    Use at APIRouter level (not per-route inline checks — PITFALLS C4):
+        router = APIRouter(dependencies=[Depends(require_admin)])
+
+    Raises:
+        HTTPException 401: no/invalid/expired token (from get_current_user)
+        HTTPException 403: user is not the seeded admin superuser
+    """
+    if current_user.role != UserRole.librarian or current_user.email != settings.ADMIN_EMAIL:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin privileges required",
+        )
+    return current_user

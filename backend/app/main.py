@@ -4,7 +4,7 @@ FastAPI application entry point.
 Configures:
 - CORS with explicit allowed origins (never '*' with credentials — STACK.md CORS gotcha)
 - All API routers under /api prefix
-- Startup hook that seeds library_settings (idempotent)
+- Startup hook that seeds library_settings and admin superuser (both idempotent)
 """
 from contextlib import asynccontextmanager
 
@@ -15,17 +15,20 @@ from app.core.config import settings
 from app.core.db import async_session_maker
 from app.routers import health
 from app.routers import auth
-from app.seed import seed_library_settings
+from app.routers import admin
+from app.seed import seed_library_settings, seed_admin_superuser
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
     Application lifespan: seed the database on startup.
-    seed_library_settings is idempotent — safe to call on every restart.
+    Both seeds are idempotent — safe to call on every restart.
     """
     async with async_session_maker() as session:
         await seed_library_settings(session)
+        await seed_admin_superuser(session)
+        await session.commit()
     yield
 
 
@@ -49,3 +52,4 @@ app.add_middleware(
 # Mount all routers under the /api prefix
 app.include_router(health.router, prefix="/api")
 app.include_router(auth.router, prefix="/api")
+app.include_router(admin.router, prefix="/api")

@@ -5,6 +5,9 @@ Business logic for:
 - register_user: create unverified account + email verification token
 - verify_email_token: flip is_email_verified on a valid, unused, unexpired token
 - authenticate_user: verify credentials, enforce email-verified gate (D-01)
+- promote_user_to_librarian: elevate a registered account to librarian role (D-03)
+- request_password_reset: issue a reset token and log the link (AUTH-03)
+- reset_password: validate token, update password, mark token used (AUTH-03)
 
 PITFALLS Anti-Pattern 3: get_current_user (see app/dependencies.py) MUST load
 the User row from DB — do NOT trust the role claim in the JWT payload for
@@ -18,6 +21,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import hash_password, verify_password, create_access_token
+from app.core.enums import UserRole
 from app.models.email_token import EmailToken
 from app.models.user import User
 from app.schemas.auth import RegisterRequest
@@ -104,6 +108,26 @@ async def verify_email_token(session: AsyncSession, token: str) -> User:
     user = user_result.scalar_one()
     user.is_email_verified = True
 
+    return user
+
+
+async def promote_user_to_librarian(session: AsyncSession, user_id: int) -> User:
+    """
+    Promote a registered account to librarian role.
+
+    Called only by the seeded admin superuser via POST /api/admin/users/{id}/promote.
+    Only the /admin router enforces the require_admin gate (D-03, D-05).
+
+    Raises:
+        HTTPException 404: user with the given ID does not exist
+    """
+    result = await session.execute(select(User).where(User.id == user_id))
+    user = result.scalar_one_or_none()
+
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user.role = UserRole.librarian
     return user
 
 
