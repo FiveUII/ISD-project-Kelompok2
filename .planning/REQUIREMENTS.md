@@ -10,10 +10,10 @@
 
 ### Authentication (AUTH)
 
-- [ ] **AUTH-01**: User can log in with email and password and remain logged in across sessions
-- [ ] **AUTH-02**: Student can self-register with email and password (email verification required before first login)
-- [ ] **AUTH-03**: User can reset their password via an emailed link
-- [ ] **AUTH-04**: Role-based access enforced at API level — students cannot access librarian endpoints; librarians have full access
+- [x] **AUTH-01**: User can log in with email and password and remain logged in across sessions
+- [x] **AUTH-02**: Student can self-register with email and password (email verification required before first login)
+- [x] **AUTH-03**: User can reset their password via an emailed link
+- [x] **AUTH-04**: Role-based access enforced at API level — students cannot access librarian endpoints; librarians have full access
 
 ### Catalog — Librarian Management (CAT-L)
 
@@ -54,22 +54,27 @@
 ## v2 Requirements (Deferred)
 
 ### Self-Service
+
 - Student can view full loan history (all past loans)
 - Student can view outstanding fine balance
 - Student can request a renewal on an active loan
 
 ### Catalog Enhancements
+
 - Book cover images via Open Library Covers API
 - Bulk ISBN import from CSV
 
 ### Reservations
+
 - Student can place a hold on an unavailable book
 - Student receives email notification when held book becomes available
 
 ### Configuration
+
 - Librarian can configure loan period (days), daily fine rate, and reminder window via settings panel
 
 ### Reporting
+
 - Librarian can view most-borrowed books report
 - Librarian can export loan history (CSV)
 
@@ -93,10 +98,10 @@
 
 | REQ-ID | Phase | Status |
 |--------|-------|--------|
-| AUTH-01 | Phase 1 | Pending |
-| AUTH-02 | Phase 1 | Pending |
-| AUTH-03 | Phase 1 | Pending |
-| AUTH-04 | Phase 1 | Pending |
+| AUTH-01 | Phase 1 | Complete |
+| AUTH-02 | Phase 1 | Complete |
+| AUTH-03 | Phase 1 | Complete |
+| AUTH-04 | Phase 1 | Complete |
 | CATL-01 | Phase 2 | Pending |
 | CATL-02 | Phase 2 | Pending |
 | CATL-03 | Phase 2 | Pending |
@@ -122,6 +127,7 @@
 ## Definition of Done
 
 A v1 requirement is done when:
+
 1. The feature is implemented and accessible in the running Docker Compose stack
 2. The API endpoint returns correct data (verified manually or by automated test)
 3. The UI reflects the correct state after each action
