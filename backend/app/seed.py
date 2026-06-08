@@ -51,10 +51,7 @@ async def seed_admin_superuser(session: AsyncSession) -> None:
     existing = result.scalar_one_or_none()
 
     if existing is not None:
-        logger.info(
-            "Admin superuser already exists (email=%s) — seed is a no-op.",
-            settings.ADMIN_EMAIL,
-        )
+        print(f"[seed] Admin superuser already exists (email={settings.ADMIN_EMAIL}) — no-op.")
         return
 
     admin = User(
@@ -65,7 +62,4 @@ async def seed_admin_superuser(session: AsyncSession) -> None:
         is_email_verified=True,
     )
     session.add(admin)
-    logger.info(
-        "Seeded admin superuser (email=%s).",
-        settings.ADMIN_EMAIL,
-    )
+    print(f"[seed] Seeded admin superuser (email={settings.ADMIN_EMAIL}).")

@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     ADMIN_EMAIL: str = "admin@library.local"
     ADMIN_PASSWORD: str = "changeme-set-in-env"
 
-    model_config = {"env_file": ".env", "case_sensitive": True}
+    model_config = {"env_file": ".env", "case_sensitive": True, "extra": "ignore"}
 
     @property
     def allowed_origins_list(self) -> list[str]:
