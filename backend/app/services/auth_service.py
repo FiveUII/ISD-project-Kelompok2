@@ -153,3 +153,76 @@ async def authenticate_user(session: AsyncSession, email: str, password: str) ->
         )
 
     return user
+
+
+async def request_password_reset(session: AsyncSession, email: str) -> None:
+    """
+    Issue a password-reset token for the given email address.
+
+    If the email exists in the DB, creates a reset EmailToken (type="reset", 1h TTL)
+    and calls send_password_reset_email (logs in dev, SMTP in Phase 4).
+
+    ALWAYS returns successfully — never reveals whether the email exists.
+    (T-03-04: no user enumeration on forgot-password)
+    """
+    result = await session.execute(select(User).where(User.email == email))
+    user = result.scalar_one_or_none()
+
+    if user is None:
+        # No user — return silently to prevent user enumeration
+        return
+
+    # Create a single-use reset token with a 1-hour expiry (T-03-03)
+    raw_token = secrets.token_urlsafe(32)
+    reset_token = EmailToken(
+        user_id=user.id,
+        token=raw_token,
+        token_type="reset",
+        expires_at=datetime.now(timezone.utc) + timedelta(hours=1),
+    )
+    session.add(reset_token)
+    await session.flush()
+
+    # Log (dev) / send (Phase 4) the reset email
+    from app.services.email_service import send_password_reset_email
+    await send_password_reset_email(user.email, raw_token)
+
+
+async def reset_password(session: AsyncSession, token: str, new_password: str) -> None:
+    """
+    Set a new password using a valid, unused, unexpired reset token.
+
+    Marks the token as used so it cannot be replayed (T-03-03).
+
+    Raises:
+        HTTPException 400: token not found, already used, expired, or wrong type
+    """
+    result = await session.execute(
+        select(EmailToken).where(EmailToken.token == token)
+    )
+    reset_token = result.scalar_one_or_none()
+
+    if reset_token is None:
+        raise HTTPException(status_code=400, detail="Invalid password reset token")
+    if reset_token.token_type != "reset":
+        raise HTTPException(status_code=400, detail="Invalid password reset token")
+    if reset_token.used_at is not None:
+        raise HTTPException(status_code=400, detail="Password reset token already used")
+
+    # Handle both timezone-aware (PostgreSQL) and naive (SQLite/aiosqlite tests)
+    now_utc = datetime.now(timezone.utc)
+    expires_at = reset_token.expires_at
+    if expires_at.tzinfo is None:
+        now_utc = now_utc.replace(tzinfo=None)
+    if expires_at < now_utc:
+        raise HTTPException(status_code=400, detail="Password reset token has expired")
+
+    # Load the user and update the password hash
+    user_result = await session.execute(
+        select(User).where(User.id == reset_token.user_id)
+    )
+    user = user_result.scalar_one()
+    user.hashed_password = hash_password(new_password)
+
+    # Mark token as used (single-use enforcement — T-03-03)
+    reset_token.used_at = datetime.now(timezone.utc)
