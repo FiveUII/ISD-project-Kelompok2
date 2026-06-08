@@ -27,14 +27,7 @@ async def send_verification_email(email: str, token: str, frontend_base: str | N
     base = frontend_base or _DEFAULT_FRONTEND_BASE
     verification_url = f"{base}/verify-email?token={token}"
 
-    # Log at INFO so the link is visible in dev server output
-    logger.info(
-        "EMAIL VERIFICATION LINK (dev — not sent via SMTP):\n"
-        "  To: %s\n"
-        "  Link: %s",
-        email,
-        verification_url,
-    )
+    print(f"EMAIL VERIFICATION LINK (dev): to={email} link={verification_url}")
 
 
 async def send_password_reset_email(email: str, token: str, frontend_base: str | None = None) -> None:
@@ -52,11 +45,4 @@ async def send_password_reset_email(email: str, token: str, frontend_base: str |
     base = frontend_base or _DEFAULT_FRONTEND_BASE
     reset_url = f"{base}/reset-password?token={token}"
 
-    # Log at INFO so the link is visible in dev server output
-    logger.info(
-        "PASSWORD RESET LINK (dev — not sent via SMTP):\n"
-        "  To: %s\n"
-        "  Link: %s",
-        email,
-        reset_url,
-    )
+    print(f"PASSWORD RESET LINK (dev): to={email} link={reset_url}")
