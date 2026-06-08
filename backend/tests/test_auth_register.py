@@ -25,7 +25,12 @@ async def client(async_session: AsyncSession):
     from app.core.db import get_db
 
     async def override_get_db():
-        yield async_session
+        try:
+            yield async_session
+            await async_session.commit()
+        except Exception:
+            await async_session.rollback()
+            raise
 
     app.dependency_overrides[get_db] = override_get_db
     transport = ASGITransport(app=app)
@@ -123,7 +128,11 @@ async def test_register_creates_email_token(client: AsyncClient, async_session: 
     token = token_result.scalar_one()
     assert token.token_type == "verify"
     assert token.used_at is None
-    assert token.expires_at > datetime.now(timezone.utc)
+    # SQLite returns naive datetimes; strip timezone info for comparison
+    expires_at = token.expires_at
+    if expires_at.tzinfo is not None:
+        expires_at = expires_at.replace(tzinfo=None)
+    assert expires_at > datetime.now(timezone.utc).replace(tzinfo=None)
 
 
 @pytest.mark.asyncio

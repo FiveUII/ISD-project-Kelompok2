@@ -14,6 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.db import async_session_maker
 from app.routers import health
+from app.routers import auth
 from app.seed import seed_library_settings
 
 
@@ -47,3 +48,4 @@ app.add_middleware(
 
 # Mount all routers under the /api prefix
 app.include_router(health.router, prefix="/api")
+app.include_router(auth.router, prefix="/api")
