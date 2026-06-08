@@ -29,7 +29,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. A librarian can log in and access librarian-only endpoints; a student attempting the same endpoints receives a 403.
   3. A user can request a password-reset link via email and set a new password.
   4. The full Docker Compose stack (db, api, frontend, nginx) starts with a single `docker compose up` and all health checks pass.
-**Plans:** TBD
+**Plans:** 3 plans
+Plans:
+- [ ] 01-01-PLAN.md — Walking Skeleton: Docker Compose stack + FastAPI/SQLAlchemy scaffold + User/Book/Copy/library_settings model + end-to-end health round trip
+- [ ] 01-02-PLAN.md — Auth slice: self-register + strict email verification + JWT login (AUTH-01, AUTH-02)
+- [ ] 01-03-PLAN.md — RBAC at router level + admin superuser seed + librarian promotion + password reset (AUTH-03, AUTH-04)
 **UI hint:** yes
 
 ### Phase 2: Catalog
@@ -77,7 +81,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Auth | 0/? | Not started | - |
+| 1. Foundation & Auth | 0/3 | Planned | - |
 | 2. Catalog | 0/? | Not started | - |
 | 3. Loans & Circulation | 0/? | Not started | - |
 | 4. Fines & Notifications | 0/? | Not started | - |
