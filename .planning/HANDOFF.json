@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-06-08T12:18:54.277Z",
+  "phase": "1",
+  "phase_name": "Foundation & Auth",
+  "phase_dir": ".planning/phases/01-foundation-auth",
+  "plan": 0,
+  "task": 0,
+  "total_tasks": 8,
+  "status": "paused",
+  "completed_tasks": [],
+  "remaining_tasks": [
+    {"id": 1, "name": "01-01: Walking Skeleton (Docker stack + data model + DB round-trip)", "status": "not_started"},
+    {"id": 2, "name": "01-02: Self-register + email verification + JWT login (AUTH-01/02)", "status": "not_started"},
+    {"id": 3, "name": "01-03: RBAC + admin seed + role promotion + password reset (AUTH-03/04)", "status": "not_started"}
+  ],
+  "blockers": [],
+  "human_actions_pending": [],
+  "decisions": [
+    {"decision": "Students self-register; librarians use same flow, promoted by admin superuser", "rationale": "Simpler than separate flows; no chicken-and-egg problem", "phase": "1"},
+    {"decision": "JWT in localStorage, 24h TTL, no refresh token in v1", "rationale": "School intranet SPA; complexity not warranted", "phase": "1"},
+    {"decision": "SQLAlchemy 2.0 async (NOT SQLModel)", "rationale": "SQLModel async support lags", "phase": "1"},
+    {"decision": "Book/Copy schema separation is non-negotiable", "rationale": "Cannot be retrofitted after loan data exists", "phase": "1"},
+    {"decision": "RBAC via FastAPI DI at router level", "rationale": "Per-route checks cause auth gaps over time", "phase": "1"},
+    {"decision": "Docker: base + override.yml for dev, hot reload for both FastAPI and React", "rationale": "Standard Docker Compose pattern, faster dev iteration", "phase": "1"}
+  ],
+  "uncommitted_files": [],
+  "next_action": "Run /gsd-execute-phase 1 after /clear",
+  "context_notes": "Project initialization complete. All 4 phases planned at high level. Phase 1 fully planned with 3 plans across 3 waves. Plans verified (0 blockers). Ready to execute. MVP/Walking Skeleton mode active — plan 01-01 produces SKELETON.md and end-to-end Docker stack."
+}
