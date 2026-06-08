@@ -33,10 +33,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. A user can request a password-reset link via email and set a new password.
   4. The full Docker Compose stack (db, api, frontend, nginx) starts with a single `docker compose up` and all health checks pass.
 
-**Plans:** 3 plansPlans:
+**Plans:** 1/3 plans executed
 **Wave 1**
 
-- [ ] 01-01-PLAN.md — Walking Skeleton: Docker Compose stack + FastAPI/SQLAlchemy scaffold + User/Book/Copy/library_settings model + end-to-end health round trip
+- [x] 01-01-PLAN.md — Walking Skeleton: Docker Compose stack + FastAPI/SQLAlchemy scaffold + User/Book/Copy/library_settings model + end-to-end health round trip
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -102,7 +102,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Auth | 0/3 | Planned | - |
+| 1. Foundation & Auth | 1/3 | In Progress|  |
 | 2. Catalog | 0/? | Not started | - |
 | 3. Loans & Circulation | 0/? | Not started | - |
 | 4. Fines & Notifications | 0/? | Not started | - |
