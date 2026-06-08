@@ -1,0 +1,16 @@
+# Frontend Dockerfile — development with Vite HMR (hot module replacement)
+# Used by docker-compose.override.yml only (D-07)
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install dependencies
+COPY package.json package-lock.json* ./
+RUN npm ci
+
+COPY . .
+
+EXPOSE 5173
+
+# Vite dev server with HMR; --host exposes to Docker network
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

@@ -1,0 +1,25 @@
+# Development overrides — auto-loaded by Docker Compose when running 'docker compose up'.
+# This file is NOT used in production (D-06, D-08).
+#
+# Changes from base:
+# - backend: uvicorn --reload + source volume mount (hot reload, D-07)
+# - frontend: Vite dev server with HMR instead of nginx static build (D-07)
+
+services:
+  backend:
+    volumes:
+      # Mount source for hot-reload (D-07): code changes apply without rebuild
+      - ./backend:/app
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8000
