@@ -17,9 +17,9 @@ This phase does NOT deliver any catalog, loan, or notification features — thos
 
 ### Account Creation Model
 - **D-01:** Students self-register via a public `/auth/register` endpoint (email + password). Email verification required before first login — blocked, not warned.
-- **D-02:** Librarians use the same self-register flow as students. After registering, their role is `student` by default.
+- **D-02:** [informational] Librarians use the same self-register flow as students. After registering, their role is `student` by default.
 - **D-03:** A seeded admin superuser (credentials from environment variables) can promote any registered account to `librarian` role via a protected `/admin/users/{id}/promote` endpoint. This superuser is created by the DB seed on first startup — not a normal user.
-- **D-04:** No account deactivation in v1. Accounts are permanent once created.
+- **D-04:** [informational] No account deactivation in v1. Accounts are permanent once created.
 - **D-05:** No separate admin UI for role promotion — API endpoint only (Swagger / curl). Librarian promotion is an infrequent operation.
 
 ### Docker Development Setup
