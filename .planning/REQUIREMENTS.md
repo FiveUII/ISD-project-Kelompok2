@@ -91,33 +91,31 @@
 
 ## Traceability
 
-*(Populated by roadmap — maps each REQ-ID to its implementation phase)*
-
 | REQ-ID | Phase | Status |
 |--------|-------|--------|
-| AUTH-01 | — | Pending |
-| AUTH-02 | — | Pending |
-| AUTH-03 | — | Pending |
-| AUTH-04 | — | Pending |
-| CATL-01 | — | Pending |
-| CATL-02 | — | Pending |
-| CATL-03 | — | Pending |
-| CATL-04 | — | Pending |
-| CATL-05 | — | Pending |
-| CATL-06 | — | Pending |
-| CATS-01 | — | Pending |
-| CATS-02 | — | Pending |
-| LOAN-01 | — | Pending |
-| LOAN-02 | — | Pending |
-| LOAN-03 | — | Pending |
-| LOAN-04 | — | Pending |
-| LOAN-05 | — | Pending |
-| LOAN-06 | — | Pending |
-| FINE-01 | — | Pending |
-| FINE-02 | — | Pending |
-| FINE-03 | — | Pending |
-| NOTIF-01 | — | Pending |
-| NOTIF-02 | — | Pending |
+| AUTH-01 | Phase 1 | Pending |
+| AUTH-02 | Phase 1 | Pending |
+| AUTH-03 | Phase 1 | Pending |
+| AUTH-04 | Phase 1 | Pending |
+| CATL-01 | Phase 2 | Pending |
+| CATL-02 | Phase 2 | Pending |
+| CATL-03 | Phase 2 | Pending |
+| CATL-04 | Phase 2 | Pending |
+| CATL-05 | Phase 2 | Pending |
+| CATL-06 | Phase 2 | Pending |
+| CATS-01 | Phase 2 | Pending |
+| CATS-02 | Phase 2 | Pending |
+| LOAN-01 | Phase 3 | Pending |
+| LOAN-02 | Phase 3 | Pending |
+| LOAN-03 | Phase 3 | Pending |
+| LOAN-04 | Phase 3 | Pending |
+| LOAN-05 | Phase 3 | Pending |
+| LOAN-06 | Phase 3 | Pending |
+| FINE-01 | Phase 4 | Pending |
+| FINE-02 | Phase 4 | Pending |
+| FINE-03 | Phase 4 | Pending |
+| NOTIF-01 | Phase 4 | Pending |
+| NOTIF-02 | Phase 4 | Pending |
 
 ---
 
