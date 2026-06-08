@@ -136,7 +136,10 @@ async def require_admin(
         HTTPException 401: no/invalid/expired token (from get_current_user)
         HTTPException 403: user is not the seeded admin superuser
     """
-    if current_user.role != UserRole.librarian or current_user.email != settings.ADMIN_EMAIL:
+    admin_email = settings.ADMIN_EMAIL.strip().lower()
+    user_email = current_user.email.strip().lower()
+    print(f"[require_admin] user={user_email!r} admin_cfg={admin_email!r} role={current_user.role!r}")
+    if current_user.role != UserRole.librarian or user_email != admin_email:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Admin privileges required",
