@@ -9,7 +9,7 @@ export default defineConfig({
     proxy: {
       // Proxy /api requests to the FastAPI backend during development
       "/api": {
-        target: "http://localhost:8000",
+        target: "http://backend:8000",
         changeOrigin: true,
       },
     },
