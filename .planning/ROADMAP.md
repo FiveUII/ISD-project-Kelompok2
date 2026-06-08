@@ -13,7 +13,7 @@ Four phases deliver the complete v1 MVP: a Docker-containerized FastAPI + React 
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & Auth** - Docker scaffold, data model, and role-based authentication
+- [x] **Phase 1: Foundation & Auth** - Docker scaffold, data model, and role-based authentication (completed 2026-06-08)
 - [ ] **Phase 2: Catalog** - Librarian catalog management and student book search
 - [ ] **Phase 3: Loans & Circulation** - Checkout, return, due date tracking, and loan dashboards
 - [ ] **Phase 4: Fines & Notifications** - Overdue fine ledger and automated email reminders
@@ -33,7 +33,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. A user can request a password-reset link via email and set a new password.
   4. The full Docker Compose stack (db, api, frontend, nginx) starts with a single `docker compose up` and all health checks pass.
 
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 **Wave 1**
 
 - [x] 01-01-PLAN.md — Walking Skeleton: Docker Compose stack + FastAPI/SQLAlchemy scaffold + User/Book/Copy/library_settings model + end-to-end health round trip
@@ -44,7 +44,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 01-03-PLAN.md — RBAC at router level + admin superuser seed + librarian promotion + password reset (AUTH-03, AUTH-04)
+- [x] 01-03-PLAN.md — RBAC at router level + admin superuser seed + librarian promotion + password reset (AUTH-03, AUTH-04)
 
 **UI hint:** yes
 
@@ -102,7 +102,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Auth | 2/3 | In Progress|  |
+| 1. Foundation & Auth | 3/3 | Complete   | 2026-06-08 |
 | 2. Catalog | 0/? | Not started | - |
 | 3. Loans & Circulation | 0/? | Not started | - |
 | 4. Fines & Notifications | 0/? | Not started | - |
