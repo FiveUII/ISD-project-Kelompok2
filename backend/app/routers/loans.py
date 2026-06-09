@@ -16,7 +16,9 @@ Threat model compliance:
     T-03-02  PATCH return: idempotency check — 409 if already returned
     T-03-03  POST checkout: role check before checkout — 400 if not student
 """
+import math
 from datetime import datetime, timedelta, timezone
+from decimal import Decimal
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func, select
@@ -27,6 +29,7 @@ from app.core.db import get_db
 from app.core.enums import CopyStatus, UserRole
 from app.dependencies import get_current_user, require_librarian
 from app.models.copy import Copy
+from app.models.fine import Fine
 from app.models.library_settings import LibrarySettings
 from app.models.loan import Loan
 from app.models.user import User
@@ -184,6 +187,33 @@ async def return_loan(
     copy = copy_result.scalar_one_or_none()
     if copy is not None:
         copy.status = CopyStatus.available
+
+    # 4. Auto-calculate fine for overdue returns (FINE-01, T-04-01 mitigated)
+    # days_overdue is computed from DB timestamps — no client input into fine amount.
+    if loan.returned_at > loan.due_date:
+        days_overdue = math.ceil(
+            (loan.returned_at - loan.due_date).total_seconds() / 86400
+        )
+    else:
+        days_overdue = 0
+
+    if days_overdue > 0:
+        # Load fine rate from library_settings; fall back to $0.25 if no settings row
+        settings_result = await session.execute(
+            select(LibrarySettings).where(LibrarySettings.id == 1)
+        )
+        library_settings = settings_result.scalar_one_or_none()
+        fine_rate = (
+            Decimal(str(library_settings.fine_rate_per_day))
+            if library_settings
+            else Decimal("0.25")
+        )
+        fine = Fine(
+            loan_id=loan.id,
+            amount=fine_rate * days_overdue,
+            days_overdue=days_overdue,
+        )
+        session.add(fine)
 
     await session.flush()
 
