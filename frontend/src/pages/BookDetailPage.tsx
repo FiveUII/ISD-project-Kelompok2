@@ -24,7 +24,7 @@ interface Copy {
   book_id: number;
   barcode: string | null;
   condition: string;
-  status: "available" | "on_loan" | "lost";
+  status: "available" | "on_loan" | "lost" | "withdrawn";
   created_at: string;
 }
 
