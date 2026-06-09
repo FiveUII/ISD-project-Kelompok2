@@ -90,11 +90,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Loans whose due date has passed are automatically flagged as overdue without any manual action.
   4. A student can view all their active loans with due dates; a librarian can view all active loans and a filtered list of overdue loans across all students.
 
-**Plans:** 3 plans
+**Plans:** 1/3 plans executed
 
 **Wave 1**
 
-- [ ] 03-01-PLAN.md — Loan model + Alembic migration 0005 + loans backend API (checkout, return, active/overdue list)
+- [x] 03-01-PLAN.md — Loan model + Alembic migration 0005 + loans backend API (checkout, return, active/overdue list)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -130,5 +130,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation & Auth | 3/3 | Complete    | 2026-06-08 |
 | 2. Catalog | 3/3 | Complete    | 2026-06-09 |
-| 3. Loans & Circulation | 0/? | Not started | - |
+| 3. Loans & Circulation | 1/3 | In Progress|  |
 | 4. Fines & Notifications | 0/? | Not started | - |
