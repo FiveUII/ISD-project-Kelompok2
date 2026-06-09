@@ -34,6 +34,7 @@ class Loan(Base):
     # Relationships
     copy: Mapped["Copy"] = relationship("Copy", back_populates="loans")  # type: ignore[name-defined]
     borrower: Mapped["User"] = relationship("User", back_populates="loans")  # type: ignore[name-defined]
+    fines: Mapped[list["Fine"]] = relationship("Fine", back_populates="loan")  # type: ignore[name-defined]
 
     def __repr__(self) -> str:
         return (
