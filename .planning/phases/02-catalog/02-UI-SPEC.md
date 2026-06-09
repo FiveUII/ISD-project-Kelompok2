@@ -164,7 +164,7 @@ Declared primary visual anchors per screen, so the executor applies appropriate 
 | Table column: total copies | "Copies" |
 | Row action: edit | "Edit" |
 | Row action: delete | "Delete" |
-| Soft-delete confirmation | "Delete book — This will remove the book from the catalog. Loan history is preserved. This action cannot be undone. [Delete] [Cancel]" |
+| Soft-delete confirmation | "Delete book — This will remove the book from the catalog. Loan history is preserved. This action cannot be undone. [Delete] [Keep Book]" |
 | Delete success toast | "Book deleted." |
 
 ### Add Book Form (`/librarian/books/new`)
@@ -185,7 +185,7 @@ Declared primary visual anchors per screen, so the executor applies appropriate 
 | Publisher field label | "Publisher" |
 | Publish year field label | "Publish Year" |
 | Primary CTA | "Save Book" |
-| Cancel action | "Cancel" |
+| Cancel action | "Discard Book" |
 | Validation error (required field) | "[Field name] is required." |
 | Save success redirect | (redirect to `/librarian/books/:id`) |
 
@@ -195,7 +195,7 @@ Declared primary visual anchors per screen, so the executor applies appropriate 
 |---------|------|
 | Page title | "Edit Book" |
 | Primary CTA | "Save Changes" |
-| Cancel action | "Cancel" |
+| Cancel action | "Discard Changes" |
 | Save success notice | "Book updated." |
 
 ### Book Detail + Copy Management (`/librarian/books/:id`)
@@ -209,7 +209,7 @@ Declared primary visual anchors per screen, so the executor applies appropriate 
 | Copy status label: on_loan | "On Loan" |
 | Copy status label: lost | "Lost" |
 | Mark as lost action | "Mark as Lost" |
-| Mark as lost confirmation | "Mark copy as lost — Copy [barcode/ID] will be marked as lost and removed from available inventory. [Confirm] [Cancel]" |
+| Mark as lost confirmation | "Mark copy as lost — Copy [barcode/ID] will be marked as lost and removed from available inventory. [Mark as Lost] [Keep Copy]" |
 | Empty copies state | "No copies added yet. Add a physical copy to make this book available." |
 
 ### Student Catalog (`/catalog`)
@@ -218,7 +218,7 @@ Declared primary visual anchors per screen, so the executor applies appropriate 
 |---------|------|
 | Page title | "Book Catalog" |
 | Search field placeholder | "Search by title, author, or ISBN..." |
-| Search button | "Search" |
+| Search button | "Search Catalog" |
 | Empty search state heading | "No books found" |
 | Empty search state body | "Try a different title, author, or ISBN." |
 | No-query state heading | "Search the catalog" |
@@ -246,7 +246,7 @@ Declared primary visual anchors per screen, so the executor applies appropriate 
 ### Search Debounce / Submit (CATS-01)
 
 - Search is NOT real-time as-you-type. Submit fires on:
-  - "Search" button click, OR
+  - "Search Catalog" button click, OR
   - Enter key while search input is focused.
 - Query parameter `q` drives TanStack Query's queryKey. Navigation updates the URL: `/catalog?q=hemingway&page=1`.
 - Empty query (`q=""`) shows the no-query state, not an empty results state.
@@ -254,9 +254,9 @@ Declared primary visual anchors per screen, so the executor applies appropriate 
 ### Soft Delete Confirmation Pattern
 
 - "Delete" row action opens a shadcn Dialog (not a browser `confirm()`).
-- Dialog contains: title, description with consequences, a red destructive "Delete" Button, and a "Cancel" Button.
+- Dialog contains: title, description with consequences, a red destructive "Delete" Button, and a "Keep Book" Button.
 - On confirm: mutation fires, row disappears, success toast shown.
-- On cancel: dialog closes, no change.
+- On dismiss: dialog closes, no change.
 
 ### Mark as Lost Confirmation Pattern
 
