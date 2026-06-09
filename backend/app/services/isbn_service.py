@@ -27,6 +27,11 @@ OL_USER_AGENT = "LibraryManagementSystem (faviannazmi@gmail.com)"
 
 _OL_BASE = "https://openlibrary.org"
 
+# Regex guards for Open Library key values — prevents SSRF via malicious keys
+# in the API response (CR-02).
+AUTHOR_KEY_RE = re.compile(r"^/authors/OL\d+A$")
+WORK_KEY_RE = re.compile(r"^/works/OL\d+W$")
+
 
 # ---------------------------------------------------------------------------
 # Private helpers
@@ -132,7 +137,7 @@ async def fetch_book_by_isbn(isbn: str) -> ISBNFetchResponse:
             if authors_list:
                 # Each entry is {"key": "/authors/OL...A"}
                 author_key = authors_list[0].get("key", "")
-                if author_key:
+                if author_key and AUTHOR_KEY_RE.match(author_key):
                     try:
                         author_resp = await client.get(
                             f"{_OL_BASE}{author_key}.json",
@@ -152,7 +157,7 @@ async def fetch_book_by_isbn(isbn: str) -> ISBNFetchResponse:
             if works_list:
                 # Each entry is {"key": "/works/OL...W"}
                 work_key = works_list[0].get("key", "")
-                if work_key:
+                if work_key and WORK_KEY_RE.match(work_key):
                     try:
                         works_resp = await client.get(
                             f"{_OL_BASE}{work_key}.json",
