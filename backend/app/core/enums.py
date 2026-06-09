@@ -17,6 +17,7 @@ class CopyStatus(str, Enum):
 
 
 class CopyCondition(str, Enum):
+    new = "new"
     good = "good"
     fair = "fair"
     poor = "poor"

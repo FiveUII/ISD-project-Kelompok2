@@ -12,13 +12,13 @@ Students can find any book and know if it's available; librarians can process a 
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ Student and librarian accounts with role-based access — Phase 1 (API) + Phase 2 (UI route guards, RBAC on all catalog endpoints)
+- ✓ Students can search the book catalog by title, author, or ISBN — Phase 2
+- ✓ Students can see real-time book availability — Phase 2 (correlated subquery, AvailabilityBadge)
+- ✓ Librarians can add books manually or via ISBN auto-fetch — Phase 2 (AddBookPage, ISBNFetchButton, Open Library service)
 
 ### Active
 
-- [ ] Students can search the book catalog by title, author, or ISBN
-- [ ] Students can see real-time book availability
-- [ ] Librarians can add books manually or via ISBN auto-fetch
 - [ ] Librarians can check out books to students
 - [ ] Librarians can process book returns
 - [ ] System tracks due dates for all active loans
@@ -26,7 +26,6 @@ Students can find any book and know if it's available; librarians can process a 
 - [ ] Students receive email reminders before due date
 - [ ] Students receive email alerts when overdue
 - [ ] Librarians can view all active loans and overdue items
-- [ ] Student and librarian accounts with role-based access
 - [ ] System runs fully in Docker (containerized deployment)
 
 ### Out of Scope
@@ -57,7 +56,10 @@ Students can find any book and know if it's available; librarians can process a 
 | FastAPI over Django/Flask | Async support, auto-generated docs, fast development | — Pending |
 | PostgreSQL over SQLite | Concurrent access, production-grade reliability needed | — Pending |
 | Docker-first deployment | Reproducible environment, easy onboarding | — Pending |
-| ISBN auto-fetch via Open Library API | Free, no API key needed, good coverage | — Pending |
+| ISBN auto-fetch via Open Library API | Free, no API key needed, good coverage | Working; unreachable from Docker in test env — fallback manual entry acceptable for v1 |
+| SQLAlchemy correlated subquery for available_count | Avoids N+1; single SQL statement for list + detail | Confirmed working — Phase 2 |
+| mark_copy_lost: status-only update, no deleted_at | Copy must stay visible with red badge after marking lost | Validated via UAT — Phase 2 |
+| ISBN endpoint registered before /{book_id} route | FastAPI path precedence — /isbn-fetch would match /{book_id} | Confirmed working — Phase 2 |
 
 ## Evolution
 
@@ -77,4 +79,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-06-08 after initialization*
+*Last updated: 2026-06-09 after Phase 2*

@@ -55,8 +55,8 @@ export default function Login() {
       // Step 3: persist token + user in Zustand (localStorage)
       setAuth(access_token, meResp.data);
 
-      // Step 4: redirect to the landing page
-      navigate("/");
+      // Step 4: redirect to catalog after login
+      navigate("/catalog");
     } catch (err) {
       const axiosErr = err as AxiosError<{ detail: string }>;
       if (axiosErr.response?.status === 403) {

@@ -14,9 +14,9 @@ Four phases deliver the complete v1 MVP: a Docker-containerized FastAPI + React 
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Auth** - Docker scaffold, data model, and role-based authentication (completed 2026-06-08)
-- [ ] **Phase 2: Catalog** - Librarian catalog management and student book search
-- [ ] **Phase 3: Loans & Circulation** - Checkout, return, due date tracking, and loan dashboards
-- [ ] **Phase 4: Fines & Notifications** - Overdue fine ledger and automated email reminders
+- [x] **Phase 2: Catalog** - Librarian catalog management and student book search (completed 2026-06-09)
+- [x] **Phase 3: Loans & Circulation** - Checkout, return, due date tracking, and loan dashboards (completed 2026-06-09)
+- [x] **Phase 4: Fines & Notifications** - Overdue fine ledger and automated email reminders (completed 2026-06-09)
 
 ## Phase Details
 
@@ -61,7 +61,20 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. A student can search the catalog by title, author, or ISBN and see matching results with an accurate count of currently available copies.
   4. Book availability updates immediately after a copy's status changes — no stale counts visible to students.
 
-**Plans:** TBD
+**Plans:** 3/3 plans complete
+
+**Wave 0** — Dev Infrastructure (blocks all other plans)
+
+- [x] 02-01-PLAN.md — shadcn init + path alias + AppLayout/NavBar shell + Alembic 0003 indexes
+
+**Wave 1** *(blocked on Wave 0 completion)*
+
+- [x] 02-02-PLAN.md — Backend catalog API: books CRUD + copies + ISBN fetch service (CATL-01 through CATL-06, CATS-01, CATS-02)
+
+**Wave 2** *(blocked on Wave 0 and Wave 1 completion)*
+
+- [x] 02-03-PLAN.md — Frontend catalog UI: CatalogPage + LibrarianBooksPage + AddBookPage + BookDetailPage + all helper components (CATL-01 through CATL-06, CATS-01, CATS-02)
+
 **UI hint:** yes
 
 ### Phase 3: Loans & Circulation
@@ -77,7 +90,20 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Loans whose due date has passed are automatically flagged as overdue without any manual action.
   4. A student can view all their active loans with due dates; a librarian can view all active loans and a filtered list of overdue loans across all students.
 
-**Plans:** TBD
+**Plans:** 3/3 plans complete
+
+**Wave 1**
+
+- [x] 03-01-PLAN.md — Loan model + Alembic migration 0005 + loans backend API (checkout, return, active/overdue list)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [x] 03-02-PLAN.md — NavBar extensions + Librarian Loans Dashboard (active/overdue tabs, Return action) + Checkout modal on Book Detail
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [x] 03-03-PLAN.md — Student My Loans page (card list, overdue badge, empty state) + /my-loans route
+
 **UI hint:** yes
 
 ### Phase 4: Fines & Notifications
@@ -93,7 +119,19 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. The system automatically sends a due-date reminder email to a student a configurable number of days before their loan is due.
   4. The system automatically sends an overdue alert email to a student when their loan passes the due date.
 
-**Plans:** TBD
+**Plans:** 3/3 plans complete
+
+**Wave 1**
+
+- [x] 04-01-PLAN.md — Fine model + Alembic migration 0006 + auto-calculate fine on overdue return (FINE-01)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [x] 04-02-PLAN.md — Fines pay/waive API + Librarian Fines page (FINE-02, FINE-03)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [x] 04-03-PLAN.md — Email notification service + APScheduler daily job (NOTIF-01, NOTIF-02)
 
 ## Progress
 
@@ -103,6 +141,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Auth | 3/3 | Complete    | 2026-06-08 |
-| 2. Catalog | 0/? | Not started | - |
-| 3. Loans & Circulation | 0/? | Not started | - |
-| 4. Fines & Notifications | 0/? | Not started | - |
+| 2. Catalog | 3/3 | Complete    | 2026-06-09 |
+| 3. Loans & Circulation | 3/3 | Complete   | 2026-06-09 |
+| 4. Fines & Notifications | 3/3 | Complete   | 2026-06-09 |
