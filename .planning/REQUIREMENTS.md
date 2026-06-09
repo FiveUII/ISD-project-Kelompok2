@@ -17,17 +17,17 @@
 
 ### Catalog — Librarian Management (CAT-L)
 
-- [ ] **CATL-01**: Librarian can add a book by entering title, author, ISBN, and description manually
-- [ ] **CATL-02**: Librarian can auto-fetch book details (title, author, description) by entering an ISBN (Open Library API)
-- [ ] **CATL-03**: Librarian can edit any book's details
-- [ ] **CATL-04**: Librarian can soft-delete a book (preserves loan history)
-- [ ] **CATL-05**: Librarian can add physical copies of a book (each copy tracked individually with a status: available / on loan / lost)
-- [ ] **CATL-06**: Librarian can update the status of a physical copy (e.g., mark as lost)
+- [x] **CATL-01**: Librarian can add a book by entering title, author, ISBN, and description manually
+- [x] **CATL-02**: Librarian can auto-fetch book details (title, author, description) by entering an ISBN (Open Library API)
+- [x] **CATL-03**: Librarian can edit any book's details
+- [x] **CATL-04**: Librarian can soft-delete a book (preserves loan history)
+- [x] **CATL-05**: Librarian can add physical copies of a book (each copy tracked individually with a status: available / on loan / lost)
+- [x] **CATL-06**: Librarian can update the status of a physical copy (e.g., mark as lost)
 
 ### Catalog — Student Search (CAT-S)
 
-- [ ] **CATS-01**: Student can search the catalog by title, author, or ISBN
-- [ ] **CATS-02**: Student can see how many copies of each book are currently available
+- [x] **CATS-01**: Student can search the catalog by title, author, or ISBN
+- [x] **CATS-02**: Student can see how many copies of each book are currently available
 
 ### Loans — Circulation (LOAN)
 
@@ -102,14 +102,14 @@
 | AUTH-02 | Phase 1 | Complete |
 | AUTH-03 | Phase 1 | Complete |
 | AUTH-04 | Phase 1 | Complete |
-| CATL-01 | Phase 2 | Pending |
-| CATL-02 | Phase 2 | Pending |
-| CATL-03 | Phase 2 | Pending |
-| CATL-04 | Phase 2 | Pending |
-| CATL-05 | Phase 2 | Pending |
-| CATL-06 | Phase 2 | Pending |
-| CATS-01 | Phase 2 | Pending |
-| CATS-02 | Phase 2 | Pending |
+| CATL-01 | Phase 2 | Complete |
+| CATL-02 | Phase 2 | Complete |
+| CATL-03 | Phase 2 | Complete |
+| CATL-04 | Phase 2 | Complete |
+| CATL-05 | Phase 2 | Complete |
+| CATL-06 | Phase 2 | Complete |
+| CATS-01 | Phase 2 | Complete |
+| CATS-02 | Phase 2 | Complete |
 | LOAN-01 | Phase 3 | Pending |
 | LOAN-02 | Phase 3 | Pending |
 | LOAN-03 | Phase 3 | Pending |

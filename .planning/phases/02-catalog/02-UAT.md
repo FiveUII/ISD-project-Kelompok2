@@ -1,9 +1,9 @@
 ---
-status: diagnosed
+status: complete
 phase: 02-catalog
 source: 02-01-SUMMARY.md, 02-02-SUMMARY.md, 02-03-SUMMARY.md
 started: 2026-06-09T00:00:00Z
-updated: 2026-06-09T12:00:00Z
+updated: 2026-06-09T13:00:00Z
 ---
 
 ## Current Test
@@ -68,10 +68,9 @@ expected: On the book detail page (/librarian/books/:id), the Physical Copies se
 result: pass
 
 ### 14. Librarian Mark Copy as Lost (Confirmation)
-expected: On the book detail page, clicking "Mark as Lost" on a copy opens a ConfirmDialog. Confirming changes the copy's badge to red "lost" and decrements the available_count. The book is soft-deleted too (deleted_at set on copy). Cancelling closes the dialog without changes.
-result: issue
-reported: "The copy disappears from the book detail page after confirming 'Mark as Lost' instead of staying visible with a red 'lost' badge. The available_count change is not confirmed. Expected behavior: copy should remain visible with a red 'lost' badge after marking as lost."
-severity: major
+expected: On the book detail page, clicking "Mark as Lost" on a copy opens a ConfirmDialog. Confirming changes the copy's badge to red "lost" and decrements the available_count. Copy stays visible in the list. Cancelling closes the dialog without changes.
+result: pass
+note: Re-tested after fix (commit f7078e3) — removed deleted_at assignment from mark_copy_lost so copy remains visible with red "lost" badge.
 
 ### 15. Availability Badge Accuracy
 expected: After adding a copy to a book (status: available), the AvailabilityBadge on the student catalog search results and on the book detail header reflects the correct count in real time (after next query). No stale counts visible after status changes.
@@ -80,36 +79,24 @@ result: pass
 ## Summary
 
 total: 15
-passed: 13
-issues: 2
+passed: 14
+issues: 0
 pending: 0
 skipped: 1
 blocked: 0
 
 ## Gaps
 
-- truth: "Copy remains visible with a red 'lost' badge after marking as lost; available_count decrements"
-  status: failed
-  reason: "User reported: The copy disappears from the book detail page after confirming 'Mark as Lost' instead of staying visible with a red 'lost' badge. The available_count change is not confirmed."
-  severity: major
-  test: 14
-  root_cause: "mark_copy_lost (books.py:386) sets copy.deleted_at, but get_book (books.py:337) filters copies with Copy.deleted_at.is_(None) — so the lost copy is excluded from the refetched response and disappears from the UI. Fix: remove deleted_at assignment from mark_copy_lost; set only copy.status = CopyStatus.lost. The available_count subquery already excludes lost copies via status filter."
-  artifacts:
-    - path: "backend/app/routers/books.py"
-      issue: "mark_copy_lost sets copy.deleted_at (line 386), causing the copy to be filtered out by the deleted_at.is_(None) guard in get_book copies query (line 337)"
-  missing:
-    - "Remove copy.deleted_at assignment from mark_copy_lost — only set copy.status = CopyStatus.lost"
-  debug_session: ""
+[none — all issues resolved]
 
-- truth: "NavBar and authenticated shell renders on all post-login pages"
-  status: failed
-  reason: "User reported: frontend still shows old Walking Skeleton after rebuild; /login does not render"
-  severity: blocker
-  test: 2
-  root_cause: "index.css had @import 'shadcn/tailwind.css' — shadcn npm package is a CLI tool with no tailwind.css file. Vite dev server threw a module resolution error blocking index.css from loading, preventing React from mounting. Fixed (commit ad55891). Additional issue found: Login.tsx used navigate('/') instead of navigate('/catalog') after successful auth. Fixed (commit 03b5299)."
-  artifacts:
-    - path: "frontend/src/index.css"
-      issue: "Invalid @import 'shadcn/tailwind.css' — file does not exist in npm package"
-  missing:
-    - "Remove @import 'shadcn/tailwind.css' from index.css (CSS variables already defined inline)"
-  debug_session: ""
+## Resolved Issues
+
+- test: 14
+  truth: "Copy remains visible with red 'lost' badge after marking as lost"
+  fix: "Removed copy.deleted_at assignment from mark_copy_lost (commit f7078e3)"
+  verified: 2026-06-09
+
+- test: 2
+  truth: "NavBar and authenticated shell renders on all post-login pages"
+  fix: "Removed invalid @import 'shadcn/tailwind.css' (commit ad55891); fixed post-login redirect to /catalog (commit 03b5299)"
+  verified: 2026-06-09
