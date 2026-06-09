@@ -14,7 +14,7 @@ Four phases deliver the complete v1 MVP: a Docker-containerized FastAPI + React 
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Auth** - Docker scaffold, data model, and role-based authentication (completed 2026-06-08)
-- [ ] **Phase 2: Catalog** - Librarian catalog management and student book search
+- [x] **Phase 2: Catalog** - Librarian catalog management and student book search (completed 2026-06-09)
 - [ ] **Phase 3: Loans & Circulation** - Checkout, return, due date tracking, and loan dashboards
 - [ ] **Phase 4: Fines & Notifications** - Overdue fine ledger and automated email reminders
 
@@ -61,7 +61,20 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. A student can search the catalog by title, author, or ISBN and see matching results with an accurate count of currently available copies.
   4. Book availability updates immediately after a copy's status changes — no stale counts visible to students.
 
-**Plans:** TBD
+**Plans:** 3/3 plans complete
+
+**Wave 0** — Dev Infrastructure (blocks all other plans)
+
+- [x] 02-01-PLAN.md — shadcn init + path alias + AppLayout/NavBar shell + Alembic 0003 indexes
+
+**Wave 1** *(blocked on Wave 0 completion)*
+
+- [x] 02-02-PLAN.md — Backend catalog API: books CRUD + copies + ISBN fetch service (CATL-01 through CATL-06, CATS-01, CATS-02)
+
+**Wave 2** *(blocked on Wave 0 and Wave 1 completion)*
+
+- [x] 02-03-PLAN.md — Frontend catalog UI: CatalogPage + LibrarianBooksPage + AddBookPage + BookDetailPage + all helper components (CATL-01 through CATL-06, CATS-01, CATS-02)
+
 **UI hint:** yes
 
 ### Phase 3: Loans & Circulation
@@ -103,6 +116,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Auth | 3/3 | Complete    | 2026-06-08 |
-| 2. Catalog | 0/? | Not started | - |
+| 2. Catalog | 3/3 | Complete   | 2026-06-09 |
 | 3. Loans & Circulation | 0/? | Not started | - |
 | 4. Fines & Notifications | 0/? | Not started | - |
