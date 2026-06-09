@@ -34,7 +34,7 @@
 - [x] **LOAN-01**: Librarian can check out a specific copy to a student (creates an active loan with a due date)
 - [x] **LOAN-02**: Librarian can process a return for an active loan
 - [x] **LOAN-03**: System automatically flags loans as overdue when due date passes
-- [ ] **LOAN-04**: Student can view all their currently active loans with due dates
+- [x] **LOAN-04**: Student can view all their currently active loans with due dates
 - [x] **LOAN-05**: Librarian can view all active loans across all students
 - [x] **LOAN-06**: Librarian can view all overdue loans
 
@@ -113,7 +113,7 @@
 | LOAN-01 | Phase 3 | Complete |
 | LOAN-02 | Phase 3 | Complete |
 | LOAN-03 | Phase 3 | Complete |
-| LOAN-04 | Phase 3 | Pending |
+| LOAN-04 | Phase 3 | Complete |
 | LOAN-05 | Phase 3 | Complete |
 | LOAN-06 | Phase 3 | Complete |
 | FINE-01 | Phase 4 | Pending |
