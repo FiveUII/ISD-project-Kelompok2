@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Auth** - Docker scaffold, data model, and role-based authentication (completed 2026-06-08)
 - [x] **Phase 2: Catalog** - Librarian catalog management and student book search (completed 2026-06-09)
-- [ ] **Phase 3: Loans & Circulation** - Checkout, return, due date tracking, and loan dashboards
+- [x] **Phase 3: Loans & Circulation** - Checkout, return, due date tracking, and loan dashboards (completed 2026-06-09)
 - [ ] **Phase 4: Fines & Notifications** - Overdue fine ledger and automated email reminders
 
 ## Phase Details
@@ -90,7 +90,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Loans whose due date has passed are automatically flagged as overdue without any manual action.
   4. A student can view all their active loans with due dates; a librarian can view all active loans and a filtered list of overdue loans across all students.
 
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 **Wave 1**
 
@@ -102,7 +102,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 03-03-PLAN.md — Student My Loans page (card list, overdue badge, empty state) + /my-loans route
+- [x] 03-03-PLAN.md — Student My Loans page (card list, overdue badge, empty state) + /my-loans route
 
 **UI hint:** yes
 
@@ -130,5 +130,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation & Auth | 3/3 | Complete    | 2026-06-08 |
 | 2. Catalog | 3/3 | Complete    | 2026-06-09 |
-| 3. Loans & Circulation | 2/3 | In Progress|  |
+| 3. Loans & Circulation | 3/3 | Complete   | 2026-06-09 |
 | 4. Fines & Notifications | 0/? | Not started | - |
