@@ -119,7 +119,19 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. The system automatically sends a due-date reminder email to a student a configurable number of days before their loan is due.
   4. The system automatically sends an overdue alert email to a student when their loan passes the due date.
 
-**Plans:** TBD
+**Plans:** 3 plans
+
+**Wave 1**
+
+- [ ] 04-01-PLAN.md — Fine model + Alembic migration 0006 + auto-calculate fine on overdue return (FINE-01)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 04-02-PLAN.md — Fines pay/waive API + Librarian Fines page (FINE-02, FINE-03)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 04-03-PLAN.md — Email notification service + APScheduler daily job (NOTIF-01, NOTIF-02)
 
 ## Progress
 
