@@ -35,9 +35,19 @@ export default function NavBar() {
             <Link to="/catalog" className={linkClass("/catalog")}>
               Catalog
             </Link>
+            {user?.role === "student" && (
+              <Link to="/my-loans" className={linkClass("/my-loans")}>
+                My Loans
+              </Link>
+            )}
             {user?.role === "librarian" && (
               <Link to="/librarian/books" className={linkClass("/librarian/books")}>
                 Manage Books
+              </Link>
+            )}
+            {user?.role === "librarian" && (
+              <Link to="/librarian/loans" className={linkClass("/librarian/loans")}>
+                Loans
               </Link>
             )}
           </nav>
