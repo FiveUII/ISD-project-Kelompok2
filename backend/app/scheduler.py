@@ -15,21 +15,23 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from app.services.notification_service import run_notification_job
 
-scheduler = AsyncIOScheduler(misfire_grace_time=3600)
-
 
 def configure_scheduler() -> AsyncIOScheduler:
     """
-    Add the daily notification job and return the configured scheduler.
+    Instantiate and configure a fresh AsyncIOScheduler with the daily notification job.
+
+    Returns a new scheduler instance each call — avoids module-level mutable global
+    that could accumulate duplicate jobs on re-import or hot-reload (WR-01 fix).
 
     The scheduler is started/stopped in the FastAPI lifespan (main.py).
     Job fires at startup (via asyncio.ensure_future in lifespan) and then
     every 24 hours via the interval trigger.
     """
-    scheduler.add_job(
+    _scheduler = AsyncIOScheduler(misfire_grace_time=3600)
+    _scheduler.add_job(
         run_notification_job,
         "interval",
         hours=24,
         id="daily_notifications",
     )
-    return scheduler
+    return _scheduler

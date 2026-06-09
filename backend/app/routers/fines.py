@@ -12,6 +12,8 @@ Threat model compliance:
     T-04-05  WaiveRequest.reason validator rejects blank reasons
     T-04-06  409 guard on pay/waive when fine.status != "unpaid" (already settled)
 """
+from typing import Literal
+
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -66,7 +68,7 @@ def _fine_to_detail(fine: Fine) -> FineDetailResponse:
 
 @fines_router.get("", response_model=FinesListResponse)
 async def list_fines(
-    status_filter: str | None = Query(None, alias="status"),
+    status_filter: Literal["unpaid", "paid", "waived"] | None = Query(None, alias="status"),
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
     session: AsyncSession = Depends(get_db),

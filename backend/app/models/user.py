@@ -4,7 +4,7 @@ Auth-specific logic (password verification, token generation) lives in Plan 02/0
 """
 from datetime import datetime
 from sqlalchemy import Boolean, DateTime, Enum, Integer, String, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.db import Base
 from app.core.enums import UserRole

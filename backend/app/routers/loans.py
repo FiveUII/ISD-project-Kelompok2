@@ -217,7 +217,7 @@ async def return_loan(
 
     await session.flush()
 
-    # 4. Reload with fresh relationships for response
+    # 5. Reload with fresh relationships for response
     loan_result = await session.execute(
         select(Loan).where(Loan.id == loan_id).options(*LOAN_EAGER_OPTIONS)
     )
