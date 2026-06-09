@@ -140,9 +140,19 @@ export default function BookDetailPage() {
 
   function handleSaveChanges(e: React.FormEvent) {
     e.preventDefault();
+    // Validate required fields before submitting (WR-02)
+    if (!editTitle.trim()) {
+      setMutationError("Title is required.");
+      return;
+    }
+    if (!editAuthor.trim()) {
+      setMutationError("Author is required.");
+      return;
+    }
+    setMutationError("");
     const payload: BookUpdatePayload = {
-      title: editTitle.trim() || undefined,
-      author: editAuthor.trim() || undefined,
+      title: editTitle.trim(),
+      author: editAuthor.trim(),
       isbn: editIsbn.trim() || null,
       publisher: editPublisher.trim() || null,
       publish_year: editPublishYear ? parseInt(editPublishYear, 10) : null,
