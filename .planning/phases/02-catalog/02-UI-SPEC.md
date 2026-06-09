@@ -81,16 +81,16 @@ Exceptions:
 | Role | Size | Weight | Line Height | Tailwind Class |
 |------|------|--------|-------------|----------------|
 | Body | 14px | 400 (regular) | 1.5 | `text-sm` |
-| Label | 14px | 500 (medium) | 1.4 | `text-sm font-medium` |
+| Label | 14px | 600 (semibold) | 1.4 | `text-sm font-semibold` |
 | Heading | 20px | 600 (semibold) | 1.2 | `text-xl font-semibold` |
-| Display | 28px | 700 (bold) | 1.2 | `text-3xl font-bold` |
+| Display | 28px | 600 (semibold) | 1.2 | `text-3xl font-semibold` |
 
 Notes:
 - Body at 14px/1.5 matches Phase 1 established pattern (`text-sm` throughout auth pages).
 - Display (28px) is reserved for page titles only: "Manage Books", "Book Catalog".
 - Heading (20px) is for section titles: "Add Book", "Copies", column group headers.
-- Label (14px/500) is for all form labels, table column headers, and nav links.
-- Maximum 2 font weights in any single view: regular (400) + either medium (500) or semibold (600) depending on context. Bold (700) appears only in page-level headings.
+- Label (14px/600) is for all form labels, table column headers, and nav links.
+- Exactly 2 font weights are used across all views: 400 (regular) for body text, and 600 (semibold) for ALL emphasis — form labels, table headers, section headings, page titles, and display text. Use `font-semibold` wherever `font-medium` or `font-bold` would previously have been used.
 
 ---
 
@@ -109,11 +109,10 @@ All values reference Tailwind's neutral palette, continuing the pattern establis
 
 1. Primary CTA buttons: "Add Book", "Fetch Details", "Save Changes", "Add Copy"
 2. Active nav link indicator (left border or underline on active route)
-3. Availability badge when count > 0: `bg-blue-100 text-blue-700`
-4. Pagination current-page indicator
-5. Focus ring on interactive inputs: `ring-blue-500`
+3. Pagination current-page indicator
+4. Focus ring on interactive inputs: `ring-blue-500`
 
-Accent is NOT used on: table row hover, secondary buttons, destructive confirmations, status labels other than availability.
+Accent is NOT used on: table row hover, secondary buttons, destructive confirmations, availability badges, or status labels of any kind. Availability status is communicated exclusively via the green/gray badge palette below.
 
 **Status color map (for Copy status badges):**
 
@@ -127,6 +126,15 @@ Accent is NOT used on: table row hover, secondary buttons, destructive confirmat
 
 - Count > 0: `bg-green-100 text-green-700` — "3 available"
 - Count = 0: `bg-gray-100 text-gray-500` — "0 available"
+
+---
+
+## Primary Focal Points
+
+Declared primary visual anchors per screen, so the executor applies appropriate sizing and placement emphasis:
+
+- **`/librarian/books`:** Primary visual anchor is the "Add Book" CTA button (`bg-blue-600`, top-right of the page header row). It is the only blue-filled button on the page and occupies the highest-contrast position above the DataTable.
+- **`/catalog`:** Primary visual anchor is the search input (full-width at `max-w-2xl`, horizontally centered, rendered above all results). It is visually prominent at rest and the first interactive element in tab order.
 
 ---
 
@@ -295,9 +303,9 @@ Phase 2 introduces the shared authenticated layout shell (D-10).
 | student | "Catalog" → `/catalog` |
 | librarian | "Catalog" → `/catalog`, "Manage Books" → `/librarian/books` |
 
-- Active link: `text-blue-600 font-medium` + `border-b-2 border-blue-600` underline indicator.
+- Active link: `text-blue-600 font-semibold` + `border-b-2 border-blue-600` underline indicator.
 - Inactive link: `text-gray-600 hover:text-gray-900`.
-- Logo/name: "Library" in `font-bold text-gray-900`, links to `/catalog`.
+- Logo/name: "Library" in `font-semibold text-gray-900`, links to `/catalog`.
 - Logout: Right-aligned, text button `text-gray-500 hover:text-gray-700`, clears Zustand auth store and redirects to `/login`.
 
 ### Route Guard
