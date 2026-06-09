@@ -20,6 +20,7 @@ import LibrarianBooksPage from "./pages/LibrarianBooksPage";
 import AddBookPage from "./pages/AddBookPage";
 import BookDetailPage from "./pages/BookDetailPage";
 import LibrarianLoansPage from "./pages/LibrarianLoansPage";
+import LibrarianFinesPage from "./pages/LibrarianFinesPage";
 import MyLoansPage from "./pages/MyLoansPage";
 import { useAuthStore } from "./store/auth";
 
@@ -51,6 +52,7 @@ export default function App() {
         <Route path="/librarian/books/new" element={<AddBookPage />} />
         <Route path="/librarian/books/:id" element={<BookDetailPage />} />
         <Route path="/librarian/loans" element={<LibrarianLoansPage />} />
+        <Route path="/librarian/fines" element={<LibrarianFinesPage />} />
       </Route>
     </Routes>
   );

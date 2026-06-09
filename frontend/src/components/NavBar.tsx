@@ -50,6 +50,11 @@ export default function NavBar() {
                 Loans
               </Link>
             )}
+            {user?.role === "librarian" && (
+              <Link to="/librarian/fines" className={linkClass("/librarian/fines")}>
+                Fines
+              </Link>
+            )}
           </nav>
         </div>
 
