@@ -27,5 +27,8 @@ class User(Base):
     # Soft-delete (PITFALLS m2): never hard-delete users; loan history would break.
     deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
+    # Relationship to loans (one user can have multiple loans over time)
+    loans: Mapped[list["Loan"]] = relationship("Loan", back_populates="borrower")  # type: ignore[name-defined]
+
     def __repr__(self) -> str:
         return f"<User id={self.id} email={self.email!r} role={self.role}>"

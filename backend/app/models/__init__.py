@@ -7,3 +7,4 @@ from app.models.book import Book  # noqa: F401
 from app.models.copy import Copy  # noqa: F401
 from app.models.library_settings import LibrarySettings  # noqa: F401
 from app.models.email_token import EmailToken  # noqa: F401
+from app.models.loan import Loan  # noqa: F401

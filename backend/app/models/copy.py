@@ -35,5 +35,8 @@ class Copy(Base):
     # Relationship to parent Book
     book: Mapped["Book"] = relationship("Book", back_populates="copies")  # type: ignore[name-defined]
 
+    # Relationship to loans (one copy can have multiple loans over time)
+    loans: Mapped[list["Loan"]] = relationship("Loan", back_populates="copy")  # type: ignore[name-defined]
+
     def __repr__(self) -> str:
         return f"<Copy id={self.id} book_id={self.book_id} status={self.status}>"
