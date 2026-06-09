@@ -1,7 +1,7 @@
 /**
  * Application root with React Router routes.
  * Auth routes added in Plan 02; password reset routes added in Plan 03.
- * Catalog routes added in Phase 02 Plan 01 — wrapped in AppLayout shell.
+ * Catalog routes wired in Phase 02 Plan 03 — real page components replace Wave 0 stubs.
  *
  * Route structure:
  *   Public (no auth required): /, /register, /login, /verify-email, /forgot-password, /reset-password
@@ -16,6 +16,10 @@ import Login from "./pages/Login";
 import VerifyEmail from "./pages/VerifyEmail";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import CatalogPage from "./pages/CatalogPage";
+import LibrarianBooksPage from "./pages/LibrarianBooksPage";
+import AddBookPage from "./pages/AddBookPage";
+import BookDetailPage from "./pages/BookDetailPage";
 
 export default function App() {
   return (
@@ -30,14 +34,14 @@ export default function App() {
 
       {/* Authenticated routes — all roles */}
       <Route element={<AppLayout />}>
-        <Route path="/catalog" element={<div>Catalog coming soon</div>} />
+        <Route path="/catalog" element={<CatalogPage />} />
       </Route>
 
       {/* Librarian-only routes */}
       <Route element={<AppLayout requireLibrarian />}>
-        <Route path="/librarian/books" element={<div>Manage Books coming soon</div>} />
-        <Route path="/librarian/books/new" element={<div>Add Book coming soon</div>} />
-        <Route path="/librarian/books/:id" element={<div>Book Detail coming soon</div>} />
+        <Route path="/librarian/books" element={<LibrarianBooksPage />} />
+        <Route path="/librarian/books/new" element={<AddBookPage />} />
+        <Route path="/librarian/books/:id" element={<BookDetailPage />} />
       </Route>
     </Routes>
   );
