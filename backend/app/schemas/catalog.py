@@ -35,8 +35,8 @@ class BookCreate(BaseModel):
 class BookUpdate(BaseModel):
     """All fields optional — supports partial (PATCH-style) PUT updates."""
     isbn: Optional[str] = None
-    title: Optional[str] = None
-    author: Optional[str] = None
+    title: Optional[str] = Field(None, min_length=1)
+    author: Optional[str] = Field(None, min_length=1)
     publisher: Optional[str] = None
     publish_year: Optional[int] = Field(None, ge=1000, le=2100)
     description: Optional[str] = None
