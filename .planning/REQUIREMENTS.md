@@ -40,7 +40,7 @@
 
 ### Fines (FINE)
 
-- [ ] **FINE-01**: System automatically calculates a fine when an overdue loan is returned (days overdue × fixed daily rate)
+- [x] **FINE-01**: System automatically calculates a fine when an overdue loan is returned (days overdue × fixed daily rate)
 - [ ] **FINE-02**: Librarian can mark a fine as paid (manual cash/offline payment recording)
 - [ ] **FINE-03**: Librarian can waive a fine with a reason note
 
@@ -116,7 +116,7 @@
 | LOAN-04 | Phase 3 | Complete |
 | LOAN-05 | Phase 3 | Complete |
 | LOAN-06 | Phase 3 | Complete |
-| FINE-01 | Phase 4 | Pending |
+| FINE-01 | Phase 4 | Complete |
 | FINE-02 | Phase 4 | Pending |
 | FINE-03 | Phase 4 | Pending |
 | NOTIF-01 | Phase 4 | Pending |
