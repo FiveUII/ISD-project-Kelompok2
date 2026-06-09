@@ -46,8 +46,8 @@
 
 ### Notifications (NOTIF)
 
-- [ ] **NOTIF-01**: System sends an email reminder to the student a fixed number of days before their loan is due
-- [ ] **NOTIF-02**: System sends an email alert to the student when their loan becomes overdue
+- [x] **NOTIF-01**: System sends an email reminder to the student a fixed number of days before their loan is due
+- [x] **NOTIF-02**: System sends an email alert to the student when their loan becomes overdue
 
 ---
 
@@ -119,8 +119,8 @@
 | FINE-01 | Phase 4 | Complete |
 | FINE-02 | Phase 4 | Complete |
 | FINE-03 | Phase 4 | Complete |
-| NOTIF-01 | Phase 4 | Pending |
-| NOTIF-02 | Phase 4 | Pending |
+| NOTIF-01 | Phase 4 | Complete |
+| NOTIF-02 | Phase 4 | Complete |
 
 ---
 

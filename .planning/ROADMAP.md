@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation & Auth** - Docker scaffold, data model, and role-based authentication (completed 2026-06-08)
 - [x] **Phase 2: Catalog** - Librarian catalog management and student book search (completed 2026-06-09)
 - [x] **Phase 3: Loans & Circulation** - Checkout, return, due date tracking, and loan dashboards (completed 2026-06-09)
-- [ ] **Phase 4: Fines & Notifications** - Overdue fine ledger and automated email reminders
+- [x] **Phase 4: Fines & Notifications** - Overdue fine ledger and automated email reminders (completed 2026-06-09)
 
 ## Phase Details
 
@@ -119,7 +119,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. The system automatically sends a due-date reminder email to a student a configurable number of days before their loan is due.
   4. The system automatically sends an overdue alert email to a student when their loan passes the due date.
 
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 **Wave 1**
 
@@ -131,7 +131,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 04-03-PLAN.md — Email notification service + APScheduler daily job (NOTIF-01, NOTIF-02)
+- [x] 04-03-PLAN.md — Email notification service + APScheduler daily job (NOTIF-01, NOTIF-02)
 
 ## Progress
 
@@ -143,4 +143,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Foundation & Auth | 3/3 | Complete    | 2026-06-08 |
 | 2. Catalog | 3/3 | Complete    | 2026-06-09 |
 | 3. Loans & Circulation | 3/3 | Complete   | 2026-06-09 |
-| 4. Fines & Notifications | 2/3 | In Progress|  |
+| 4. Fines & Notifications | 3/3 | Complete   | 2026-06-09 |
