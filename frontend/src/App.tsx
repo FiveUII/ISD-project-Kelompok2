@@ -8,9 +8,8 @@
  *   Authenticated (AppLayout): /catalog
  *   Librarian-only (AppLayout requireLibrarian): /librarian/books, /librarian/books/new, /librarian/books/:id
  */
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route } from "react-router-dom";
 import AppLayout from "./components/AppLayout";
-import Landing from "./pages/Landing";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import VerifyEmail from "./pages/VerifyEmail";
@@ -20,12 +19,18 @@ import CatalogPage from "./pages/CatalogPage";
 import LibrarianBooksPage from "./pages/LibrarianBooksPage";
 import AddBookPage from "./pages/AddBookPage";
 import BookDetailPage from "./pages/BookDetailPage";
+import { useAuthStore } from "./store/auth";
+
+function RootRedirect() {
+  const { token } = useAuthStore();
+  return <Navigate to={token ? "/catalog" : "/login"} replace />;
+}
 
 export default function App() {
   return (
     <Routes>
       {/* Public routes — outside AppLayout */}
-      <Route path="/" element={<Landing />} />
+      <Route path="/" element={<RootRedirect />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
