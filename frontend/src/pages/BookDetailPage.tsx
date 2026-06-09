@@ -186,7 +186,9 @@ export default function BookDetailPage() {
     );
   }
 
-  const activeCopies = book.copies.filter((c) => c.status !== undefined);
+  // Show all copies including lost for audit purposes. The filter was always
+  // true (status is always defined) so we use the full array directly (WR-04).
+  const allCopies = book.copies;
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-8">
@@ -317,13 +319,13 @@ export default function BookDetailPage() {
         Physical Copies
       </h2>
 
-      {activeCopies.length === 0 ? (
+      {allCopies.length === 0 ? (
         <p className="text-sm text-gray-500">
           No copies added yet. Add a physical copy to make this book available.
         </p>
       ) : (
         <div className="flex flex-col gap-2 mb-4">
-          {activeCopies.map((copy) => (
+          {allCopies.map((copy) => (
             <div
               key={copy.id}
               className="flex items-center gap-3 py-2 border-b last:border-b-0"
