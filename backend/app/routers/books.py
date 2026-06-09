@@ -383,7 +383,6 @@ async def mark_copy_lost(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Copy not found")
 
     copy.status = CopyStatus.lost
-    copy.deleted_at = datetime.now(tz=timezone.utc)
     await session.commit()
     await session.refresh(copy)
     return CopyResponse.model_validate(copy)
