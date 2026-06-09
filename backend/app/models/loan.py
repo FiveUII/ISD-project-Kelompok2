@@ -30,6 +30,16 @@ class Loan(Base):
     returned_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+    # Notification deduplication flags — set to now() after each type of email is sent.
+    # Notification job filters: reminder_sent_at IS NULL + due within X days,
+    #                            overdue_sent_at IS NULL + due_date < now.
+    # (T-04-08 mitigated: flags prevent duplicate sends across scheduler runs.)
+    reminder_sent_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    overdue_sent_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
 
     # Relationships
     copy: Mapped["Copy"] = relationship("Copy", back_populates="loans")  # type: ignore[name-defined]
