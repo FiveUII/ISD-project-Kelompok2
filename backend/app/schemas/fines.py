@@ -5,14 +5,17 @@ Request schemas:
     WaiveRequest — reason for waiving a fine (non-empty string required)
 
 Response schemas (from_attributes=True — instantiated from ORM Fine rows):
-    FineResponse      — basic fine fields
-    FineDetailResponse — fine with nested loan/borrower/book info
+    FineResponse       — basic fine fields
+    LoanBriefForFine   — nested loan/borrower/book info for fines list
+    FineDetailResponse — fine with nested loan info
     FinesListResponse  — paginated list of fines
 """
 from datetime import datetime
 from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict, field_validator
+
+from app.schemas.loans import BookBriefResponse, StudentBriefResponse
 
 
 # ---------------------------------------------------------------------------
@@ -48,3 +51,34 @@ class FineResponse(BaseModel):
     status: str
     waiver_reason: str | None
     created_at: datetime
+
+
+class LoanBriefForFine(BaseModel):
+    """Brief loan info embedded in FineDetailResponse — includes borrower and book."""
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    due_date: datetime
+    returned_at: datetime | None
+    borrower: StudentBriefResponse
+    book: BookBriefResponse
+
+
+class FineDetailResponse(BaseModel):
+    """Fine with nested loan/borrower/book info for the fines management table."""
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    loan_id: int
+    amount: Decimal
+    days_overdue: int
+    status: str
+    waiver_reason: str | None
+    created_at: datetime
+    loan: LoanBriefForFine
+
+
+class FinesListResponse(BaseModel):
+    """Paginated list of fines with detail."""
+    items: list[FineDetailResponse]
+    total: int
