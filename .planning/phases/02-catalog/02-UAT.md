@@ -1,5 +1,5 @@
 ---
-status: complete
+status: diagnosed
 phase: 02-catalog
 source: 02-01-SUMMARY.md, 02-02-SUMMARY.md, 02-03-SUMMARY.md
 started: 2026-06-09T00:00:00Z
@@ -93,9 +93,12 @@ blocked: 0
   reason: "User reported: The copy disappears from the book detail page after confirming 'Mark as Lost' instead of staying visible with a red 'lost' badge. The available_count change is not confirmed."
   severity: major
   test: 14
-  root_cause: ""
-  artifacts: []
-  missing: []
+  root_cause: "mark_copy_lost (books.py:386) sets copy.deleted_at, but get_book (books.py:337) filters copies with Copy.deleted_at.is_(None) — so the lost copy is excluded from the refetched response and disappears from the UI. Fix: remove deleted_at assignment from mark_copy_lost; set only copy.status = CopyStatus.lost. The available_count subquery already excludes lost copies via status filter."
+  artifacts:
+    - path: "backend/app/routers/books.py"
+      issue: "mark_copy_lost sets copy.deleted_at (line 386), causing the copy to be filtered out by the deleted_at.is_(None) guard in get_book copies query (line 337)"
+  missing:
+    - "Remove copy.deleted_at assignment from mark_copy_lost — only set copy.status = CopyStatus.lost"
   debug_session: ""
 
 - truth: "NavBar and authenticated shell renders on all post-login pages"
