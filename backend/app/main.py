@@ -26,7 +26,7 @@ from app.scheduler import configure_scheduler
 from app.services.notification_service import run_notification_job
 from app.seed import seed_library_settings, seed_admin_superuser
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("uvicorn.error")
 
 
 @asynccontextmanager

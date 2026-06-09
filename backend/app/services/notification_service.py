@@ -25,7 +25,7 @@ from app.models.library_settings import LibrarySettings
 from app.models.loan import Loan
 from app.services.email_service import send_due_date_reminder, send_overdue_alert
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("uvicorn.error")
 
 
 async def run_notification_job() -> None:
