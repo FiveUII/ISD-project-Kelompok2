@@ -39,7 +39,7 @@ export default function LibrarianBooksPage() {
 
   const queryClient = useQueryClient();
 
-  const { data } = useQuery<BookListResponse>({
+  const { data, isError } = useQuery<BookListResponse>({
     queryKey: ["librarian-books", { q, page, page_size: 20 }],
     queryFn: () =>
       apiClient
@@ -78,9 +78,16 @@ export default function LibrarianBooksPage() {
         </Button>
       </div>
 
-      {/* Error message */}
+      {/* Error message (mutation failures) */}
       {errorMessage && (
         <p className="text-red-600 text-sm mb-4">{errorMessage}</p>
+      )}
+
+      {/* Query error message */}
+      {isError && (
+        <p className="text-red-600 text-sm mb-4">
+          Failed to load books. Please refresh the page.
+        </p>
       )}
 
       {/* Search */}

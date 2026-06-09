@@ -40,7 +40,7 @@ export default function CatalogPage() {
   // Local input state initialized from URL param
   const [inputValue, setInputValue] = useState(q);
 
-  const { data, isLoading } = useQuery<BookListResponse>({
+  const { data, isLoading, isError } = useQuery<BookListResponse>({
     queryKey: ["books", { q, page, page_size: 20 }],
     queryFn: () =>
       apiClient
@@ -95,7 +95,16 @@ export default function CatalogPage() {
         </div>
       )}
 
-      {q !== "" && !isLoading && data && data.items.length === 0 && (
+      {q !== "" && isError && (
+        <div className="text-center py-16">
+          <p className="text-xl font-semibold text-red-600">Search failed</p>
+          <p className="text-sm text-gray-500 mt-2">
+            Unable to reach the catalog. Please try again.
+          </p>
+        </div>
+      )}
+
+      {q !== "" && !isLoading && !isError && data && data.items.length === 0 && (
         <div className="text-center py-16">
           <p className="text-xl font-semibold text-gray-700">No books found</p>
           <p className="text-sm text-gray-500 mt-2">
@@ -104,7 +113,7 @@ export default function CatalogPage() {
         </div>
       )}
 
-      {q !== "" && !isLoading && data && data.items.length > 0 && (
+      {q !== "" && !isLoading && !isError && data && data.items.length > 0 && (
         <>
           <div className="flex flex-col gap-4 max-w-2xl mx-auto">
             {data.items.map((book) => (
