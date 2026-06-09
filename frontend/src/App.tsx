@@ -20,6 +20,7 @@ import LibrarianBooksPage from "./pages/LibrarianBooksPage";
 import AddBookPage from "./pages/AddBookPage";
 import BookDetailPage from "./pages/BookDetailPage";
 import LibrarianLoansPage from "./pages/LibrarianLoansPage";
+import MyLoansPage from "./pages/MyLoansPage";
 import { useAuthStore } from "./store/auth";
 
 function RootRedirect() {
@@ -41,6 +42,7 @@ export default function App() {
       {/* Authenticated routes — all roles */}
       <Route element={<AppLayout />}>
         <Route path="/catalog" element={<CatalogPage />} />
+        <Route path="/my-loans" element={<MyLoansPage />} />
       </Route>
 
       {/* Librarian-only routes */}
