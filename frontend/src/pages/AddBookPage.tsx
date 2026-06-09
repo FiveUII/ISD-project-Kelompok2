@@ -86,7 +86,10 @@ export default function AddBookPage() {
     if (isbn.trim()) payload.isbn = isbn.trim();
     if (description.trim()) payload.description = description.trim();
     if (publisher.trim()) payload.publisher = publisher.trim();
-    if (publishYear.trim()) payload.publish_year = parseInt(publishYear, 10);
+    const yearInt = parseInt(publishYear, 10);
+    if (publishYear.trim() && !isNaN(yearInt)) {
+      payload.publish_year = yearInt;
+    }
     if (coverUrl.trim()) payload.cover_url = coverUrl.trim();
 
     createMutation.mutate(payload);

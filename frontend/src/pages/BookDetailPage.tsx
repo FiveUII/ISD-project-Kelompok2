@@ -155,7 +155,7 @@ export default function BookDetailPage() {
       author: editAuthor.trim(),
       isbn: editIsbn.trim() || null,
       publisher: editPublisher.trim() || null,
-      publish_year: editPublishYear ? parseInt(editPublishYear, 10) : null,
+      publish_year: (() => { const y = parseInt(editPublishYear, 10); return editPublishYear.trim() && !isNaN(y) ? y : null; })(),
       description: editDescription.trim() || null,
     };
     updateMutation.mutate(payload);
