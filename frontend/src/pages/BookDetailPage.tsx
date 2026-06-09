@@ -65,6 +65,7 @@ export default function BookDetailPage() {
   const [editPublishYear, setEditPublishYear] = useState("");
   const [editDescription, setEditDescription] = useState("");
   const [updateMessage, setUpdateMessage] = useState("");
+  const [mutationError, setMutationError] = useState("");
 
   // Add copy form state
   const [showAddCopy, setShowAddCopy] = useState(false);
@@ -89,7 +90,11 @@ export default function BookDetailPage() {
       queryClient.invalidateQueries({ queryKey: ["book", id] });
       setIsEditing(false);
       setUpdateMessage("Book updated.");
+      setMutationError("");
       setTimeout(() => setUpdateMessage(""), 3000);
+    },
+    onError: () => {
+      setMutationError("Failed to save changes. Please try again.");
     },
   });
 
@@ -101,6 +106,10 @@ export default function BookDetailPage() {
       setShowAddCopy(false);
       setCopyBarcode("");
       setCopyCondition("good");
+      setMutationError("");
+    },
+    onError: () => {
+      setMutationError("Failed to add copy. Please try again.");
     },
   });
 
@@ -111,6 +120,10 @@ export default function BookDetailPage() {
       queryClient.invalidateQueries({ queryKey: ["book", id] });
       setLostDialogOpen(false);
       setLostCopyId(null);
+      setMutationError("");
+    },
+    onError: () => {
+      setMutationError("Failed to mark copy as lost. Please try again.");
     },
   });
 
@@ -180,6 +193,11 @@ export default function BookDetailPage() {
       {/* Update message */}
       {updateMessage && (
         <p className="text-green-600 text-sm mb-3">{updateMessage}</p>
+      )}
+
+      {/* Mutation error message */}
+      {mutationError && (
+        <p className="text-red-600 text-sm mb-3">{mutationError}</p>
       )}
 
       {/* Inline edit form */}

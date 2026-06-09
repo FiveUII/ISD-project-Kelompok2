@@ -35,6 +35,7 @@ export default function LibrarianBooksPage() {
   const [inputValue, setInputValue] = useState(q);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const queryClient = useQueryClient();
 
@@ -53,6 +54,10 @@ export default function LibrarianBooksPage() {
       queryClient.invalidateQueries({ queryKey: ["librarian-books"] });
       setDeleteDialogOpen(false);
       setDeleteTargetId(null);
+      setErrorMessage("");
+    },
+    onError: () => {
+      setErrorMessage("Failed to delete book. Please try again.");
     },
   });
 
@@ -72,6 +77,11 @@ export default function LibrarianBooksPage() {
           Add Book
         </Button>
       </div>
+
+      {/* Error message */}
+      {errorMessage && (
+        <p className="text-red-600 text-sm mb-4">{errorMessage}</p>
+      )}
 
       {/* Search */}
       <div className="mb-4 max-w-md">
