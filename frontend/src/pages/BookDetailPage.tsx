@@ -1,8 +1,13 @@
 /**
  * BookDetailPage — book detail + copies management at /librarian/books/:id.
  * Shows book metadata, inline edit form, physical copies list with CopyStatusBadge.
- * Add Copy form and Mark as Lost confirmation dialog.
+ * Add Copy form, Mark as Lost confirmation dialog, and Checkout modal for librarians.
  * Server is source of truth for availability — no client-side recalculation (T-03-02).
+ *
+ * Phase 3 additions (D-02, D-03, D-04, D-05):
+ *   - "Check Out" button on available copies (librarian only)
+ *   - Checkout modal with student search-as-you-type, selected student, approximate due date
+ *   - Checkout mutation calls POST /api/librarian/loans/checkout
  */
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -15,9 +20,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { apiClient } from "@/lib/api";
 import CopyStatusBadge from "../components/CopyStatusBadge";
 import ConfirmDialog from "../components/ConfirmDialog";
+import { checkoutCopy, searchStudents, type StudentUser } from "../api/loans";
+import { useAuthStore } from "../store/auth";
 
 interface Copy {
   id: number;
@@ -55,6 +69,7 @@ interface BookUpdatePayload {
 export default function BookDetailPage() {
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
+  const { user } = useAuthStore();
 
   // Edit form state
   const [isEditing, setIsEditing] = useState(false);
@@ -76,6 +91,13 @@ export default function BookDetailPage() {
   const [lostDialogOpen, setLostDialogOpen] = useState(false);
   const [lostCopyId, setLostCopyId] = useState<number | null>(null);
   const [lostCopyLabel, setLostCopyLabel] = useState("");
+
+  // Checkout modal state (D-02, D-03, D-04)
+  const [checkoutCopyId, setCheckoutCopyId] = useState<number | null>(null);
+  const [checkoutCopyLabel, setCheckoutCopyLabel] = useState("");
+  const [studentQuery, setStudentQuery] = useState("");
+  const [selectedStudent, setSelectedStudent] = useState<StudentUser | null>(null);
+  const [checkoutError, setCheckoutError] = useState("");
 
   const { data: book, isLoading } = useQuery<BookDetail>({
     queryKey: ["book", id],
@@ -126,6 +148,56 @@ export default function BookDetailPage() {
       setMutationError("Failed to mark copy as lost. Please try again.");
     },
   });
+
+  // Student search for checkout modal (D-03) — enabled when query >= 2 chars
+  const { data: studentSearchResults } = useQuery({
+    queryKey: ["student-search", studentQuery],
+    queryFn: () => searchStudents(studentQuery),
+    enabled: studentQuery.length >= 2,
+  });
+
+  // Checkout mutation (D-05)
+  const checkoutMutation = useMutation({
+    mutationFn: ({
+      copyId,
+      userId,
+    }: {
+      copyId: number;
+      userId: number;
+    }) => checkoutCopy(copyId, userId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["book", id] });
+      queryClient.invalidateQueries({ queryKey: ["librarian-loans"] });
+      setCheckoutCopyId(null);
+      setStudentQuery("");
+      setSelectedStudent(null);
+      setCheckoutError("");
+    },
+    onError: (error: unknown) => {
+      const axiosError = error as { response?: { status?: number } };
+      if (axiosError?.response?.status === 409) {
+        setCheckoutError("This copy is no longer available.");
+      } else if (axiosError?.response?.status === 400) {
+        setCheckoutError("Selected user is not a student account.");
+      } else {
+        setCheckoutError("Checkout failed. Please try again.");
+      }
+    },
+  });
+
+  // Approximate due date: today + 14 days (server computes actual from library_settings — D-04)
+  const approxDueDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString(
+    "en-US",
+    { year: "numeric", month: "short", day: "numeric" }
+  );
+
+  function openCheckoutModal(copy: Copy) {
+    setCheckoutCopyId(copy.id);
+    setCheckoutCopyLabel(copy.barcode ?? `Copy #${copy.id}`);
+    setStudentQuery("");
+    setSelectedStudent(null);
+    setCheckoutError("");
+  }
 
   function startEditing(book: BookDetail) {
     setEditTitle(book.title);
@@ -334,6 +406,17 @@ export default function BookDetailPage() {
                 {copy.barcode ?? `Copy #${copy.id}`}
               </span>
               <CopyStatusBadge status={copy.status} />
+              {/* Check Out button — librarian only, available copies only (D-02, D-05) */}
+              {user?.role === "librarian" && copy.status === "available" && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-blue-600 border-blue-300 hover:bg-blue-50"
+                  onClick={() => openCheckoutModal(copy)}
+                >
+                  Check Out
+                </Button>
+              )}
               {copy.status !== "lost" && (
                 <Button
                   variant="outline"
@@ -419,6 +502,109 @@ export default function BookDetailPage() {
         }}
         isLoading={markLostMutation.isPending}
       />
+
+      {/* Checkout modal — student search + confirm checkout (D-02, D-03, D-04, D-05) */}
+      <Dialog
+        open={checkoutCopyId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setCheckoutCopyId(null);
+            setStudentQuery("");
+            setSelectedStudent(null);
+            setCheckoutError("");
+          }
+        }}
+      >
+        <DialogContent showCloseButton>
+          <DialogHeader>
+            <DialogTitle>Check out {checkoutCopyLabel}</DialogTitle>
+          </DialogHeader>
+
+          {/* Student search */}
+          <div className="flex flex-col gap-1 relative">
+            <Label htmlFor="student-search">Student</Label>
+            <Input
+              id="student-search"
+              placeholder="Type student name or email..."
+              value={studentQuery}
+              onChange={(e) => {
+                setStudentQuery(e.target.value);
+                setSelectedStudent(null);
+              }}
+              autoComplete="off"
+            />
+            {/* Dropdown results */}
+            {studentQuery.length >= 2 &&
+              !selectedStudent &&
+              studentSearchResults &&
+              studentSearchResults.length > 0 && (
+                <ul className="absolute top-full left-0 right-0 z-50 mt-1 rounded-md border bg-white shadow-md max-h-48 overflow-auto text-sm">
+                  {studentSearchResults.map((student) => (
+                    <li
+                      key={student.id}
+                      className="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                      onClick={() => {
+                        setSelectedStudent(student);
+                        setStudentQuery(student.email);
+                      }}
+                    >
+                      <div className="font-medium">{student.full_name}</div>
+                      <div className="text-gray-500 text-xs">{student.email}</div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+          </div>
+
+          {/* Selected student display */}
+          {selectedStudent && (
+            <div className="rounded-md bg-blue-50 px-3 py-2 text-sm">
+              <span className="font-medium">{selectedStudent.full_name}</span>
+              <span className="text-gray-500 ml-2">{selectedStudent.email}</span>
+            </div>
+          )}
+
+          {/* Approximate due date (read-only — D-04) */}
+          <div className="text-sm text-gray-600">
+            <span className="font-medium">Due:</span> {approxDueDate}
+            <span className="text-gray-400 text-xs ml-2">(approximate — server uses library settings)</span>
+          </div>
+
+          {/* Checkout error */}
+          {checkoutError && (
+            <p className="text-sm text-red-600">{checkoutError}</p>
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setCheckoutCopyId(null);
+                setStudentQuery("");
+                setSelectedStudent(null);
+                setCheckoutError("");
+              }}
+              disabled={checkoutMutation.isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="bg-blue-600 text-white hover:bg-blue-700"
+              disabled={!selectedStudent || checkoutMutation.isPending}
+              onClick={() => {
+                if (checkoutCopyId !== null && selectedStudent) {
+                  checkoutMutation.mutate({
+                    copyId: checkoutCopyId,
+                    userId: selectedStudent.id,
+                  });
+                }
+              }}
+            >
+              {checkoutMutation.isPending ? "Checking out..." : "Confirm Checkout"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
