@@ -90,7 +90,20 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Loans whose due date has passed are automatically flagged as overdue without any manual action.
   4. A student can view all their active loans with due dates; a librarian can view all active loans and a filtered list of overdue loans across all students.
 
-**Plans:** TBD
+**Plans:** 3 plans
+
+**Wave 1**
+
+- [ ] 03-01-PLAN.md — Loan model + Alembic migration 0005 + loans backend API (checkout, return, active/overdue list)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 03-02-PLAN.md — NavBar extensions + Librarian Loans Dashboard (active/overdue tabs, Return action) + Checkout modal on Book Detail
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 03-03-PLAN.md — Student My Loans page (card list, overdue badge, empty state) + /my-loans route
+
 **UI hint:** yes
 
 ### Phase 4: Fines & Notifications
