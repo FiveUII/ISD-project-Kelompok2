@@ -17,6 +17,7 @@ from app.routers import health
 from app.routers import auth
 from app.routers import admin
 from app.routers import books
+from app.routers import loans
 from app.seed import seed_library_settings, seed_admin_superuser
 
 
@@ -57,3 +58,5 @@ app.include_router(admin.router, prefix="/api")
 app.include_router(books.student_router, prefix="/api")
 app.include_router(books.librarian_router, prefix="/api")
 app.include_router(books.copies_router, prefix="/api")
+app.include_router(loans.loans_router, prefix="/api")
+app.include_router(loans.student_loans_router, prefix="/api")
